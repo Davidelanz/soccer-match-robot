@@ -1,4 +1,5 @@
 // Arduino board pins
+// - Right motor
 #define vel_pin_r  2   // Pin for velocity control for motor r
 #define enc1_r    22   // Ecoder A for motor r
 #define enc2_r    23   // Ecoder B for motor r
