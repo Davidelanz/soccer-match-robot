@@ -19,12 +19,25 @@
 #define enc2_r 23   // Ecoder B for motor r
 #define in1_r 24    // Rotation orientation for motor r: component 1
 #define in2_r 25    // Rotation orientation for motor r: component 2
+
+// #define vel_pin_r 2 // Pin for vel_rocity control for motor r
+// #define enc1_r 22   // Ecoder A for motor r
+// #define enc2_r 23   // Ecoder B for motor r
+// #define in1_r 24    // Rotation orientation for motor r: component 1
+// #define in2_r 25    // Rotation orientation for motor r: component 2
+
 // Left motor
 #define vel_pin_l 3 // Pin for vel_rocity control for motor l
 #define enc1_l 28   // Ecoder A for motor l
 #define enc2_l 29   // Ecoder B for motor l
 #define in1_l 30    // Rotation orientation for motor l: component 1
 #define in2_l 31    // Rotation orientation for motor l: component 2
+
+// #define vel_pin_l 3 // Pin for vel_rocity control for motor l
+// #define enc1_l 28   // Ecoder A for motor l
+// #define enc2_l 29   // Ecoder B for motor l
+// #define in1_l 30    // Rotation orientation for motor l: component 1
+// #define in2_l 31    // Rotation orientation for motor l: component 2
 
 // Variables initialization
 // Right motor
