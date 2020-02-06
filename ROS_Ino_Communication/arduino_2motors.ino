@@ -10,6 +10,9 @@
   - Max speed: 11500 ± 10% rp 
 */
 
+/* Here I'm trying to use the output of the encoder??*/
+
+
 // ctrl + k + c/ctrl + k + u
 
 // Arduino board pins
@@ -201,7 +204,7 @@ void check_enc1_r()
     t_start_r = millis();
   }
 }
-
+/*
 void check_enc2_r()
 {
   int count;
@@ -225,7 +228,7 @@ void check_enc2_r()
     t_start_r = millis();
   }
 }
-
+*/
 // Left encoders
 void check_enc1_l()
 {
@@ -250,7 +253,7 @@ void check_enc1_l()
     t_start_l = millis();
   }
 }
-
+/*
 void check_enc2_l()
 {
   int count;
@@ -274,3 +277,4 @@ void check_enc2_l()
     t_start_l = millis();
   }
 }
+*/

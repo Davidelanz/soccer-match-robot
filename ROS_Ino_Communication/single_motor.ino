@@ -1,9 +1,13 @@
-
+// Set up rear motor pin 
+// Encoder pins
 #define encoderA 22
 #define encoderB 23
+// Velocity control pin 
 #define motorPin 2
-#define en1 24
+// Direction control pins
+#define en1 24  
 #define en2 25
+
 #define LOOPTIME 100  
 
 int stateA = 0;
