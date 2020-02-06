@@ -8,8 +8,8 @@
 // Rear motors' encoders
 #define encA_RL 22 // Encoder A for rear left motor
 #define encB_RL 23 // Encoder B for rear left motor
-#define encA_RR 22 // Encoder A for rear right motor
-#define encB_RR 23 // Encoder B for rear right motor
+#define encA_RR 28 // Encoder A for rear right motor
+#define encB_RR 29 // Encoder B for rear right motor
 
 #define vel_RearRight 7 // Pin for velocity control for rear right motor
 #define vel_RearLeft 6  // Pin for velocity control for rear left motor
@@ -21,10 +21,10 @@
 #define FrontRightMotorDirPin2 43 //Front left Motor direction pin 2 to Front MODEL-X IN4     (K3 = out4)
 
 // Front motors' encoders
-#define encA_FL 22 // Encoder A for front left motor
-#define encB_FL 23 // Encoder B for front left motor
-#define encA_FR 22 // Encoder A for front right motor
-#define encB_FR 23 // Encoder B for front right motor
+#define encA_FL 34 // Encoder A for front left motor
+#define encB_FL 35 // Encoder B for front left motor
+#define encA_FR 40 // Encoder A for front right motor
+#define encB_FR 41 // Encoder B for front right motor
 
 #define vel_FrontRight 4 // Pin for velocity control for front right motor
 #define vel_FrontLeft 5  // Pin for velocity control for front left motor
