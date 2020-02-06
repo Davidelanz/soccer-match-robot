@@ -29,6 +29,11 @@ def setupSerial(baudRate, serialPortName):
     print("Serial port " + serialPortName + " opened  Baudrate " + str(baudRate))
     waitForArduino()
 
+# def closeSerial(serialPortName):
+
+ #   serialPort = serial.
+ #   print("Serial port " + serialPortName + " closed")
+
 
 # ========================
 
