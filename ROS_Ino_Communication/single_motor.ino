@@ -1,9 +1,9 @@
-// Set up rear motor pin 
+// Set up rear right motor pin 
 // Encoder pins
 #define encoderA 22
 #define encoderB 23
 // Velocity control pin 
-#define motorPin 2
+#define motorPin 6
 // Direction control pins
 #define en1 24  
 #define en2 25
@@ -41,7 +41,11 @@ void setup() {
   digitalWrite(en1, LOW);
   digitalWrite(en2, HIGH);
   t_start = millis();
-  //analogWrite(motorPin, 200);
+
+  digitalWrite(en1, HIGH);
+  digitalWrite(en2, LOW);
+  analogWrite(motorPin, 200);
+
   Serial.println("<Arduino is ready>");
   Serial.flush();
 }

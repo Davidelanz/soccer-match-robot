@@ -1,10 +1,12 @@
+// crtl + shift + p to open preferences
+
 // Definitions Arduino pins connected to input H Bridge
 // IN1-IN3:blue; IN2-IN4:gray
 // Rear motors
-#define RearLeftMotorDirPin1 24  //Rear Right Motor direction pin 1 to Rear MODEL-X IN1    (K1 = out1)
-#define RearLeftMotorDirPin2 25  //Rear Right Motor direction pin 2 to Rear MODEL-X IN2    (K1 = out2)
-#define RearRightMotorDirPin1 30 //Rear left Motor direction pin 1 to Rear MODEL-X IN3     (K3 = out3)
-#define RearRightMotorDirPin2 31 //Rear Left Motor direction pin 2 to Rear MODEL-X IN4     (K3 = out4)
+#define RearLeftMotorDirPin1 24  //Rear Left Motor direction pin 1 to Rear MODEL-X IN1    (K1 = out1)
+#define RearLeftMotorDirPin2 25  //Rear Left Motor direction pin 2 to Rear MODEL-X IN2    (K1 = out2)
+#define RearRightMotorDirPin1 30 //Rear Right Motor direction pin 1 to Rear MODEL-X IN3     (K3 = out3)
+#define RearRightMotorDirPin2 31 //Rear Right Motor direction pin 2 to Rear MODEL-X IN4     (K3 = out4)
 // Rear motors' encoders
 #define encA_RR 22 // Encoder A for rear right motor
 #define encB_RR 23 // Encoder B for rear right motor
@@ -15,10 +17,10 @@
 #define vel_RearLeft 6  // Pin for velocity control for rear left motor
 
 // Front motors
-#define FrontLeftMotorDirPin1 36  //Front Right Motor direction pin 1 to Front MODEL-X IN1    (K1 = out1)
-#define FrontLeftMotorDirPin2 37  //Front Right Motor direction pin 2 to Front MODEL-X IN2    (K1 = out2)
-#define FrontRightMotorDirPin1 42 //Front left Motor direction pin 1 to Front MODEL-X IN3     (K3 = out3)
-#define FrontRightMotorDirPin2 43 //Front left Motor direction pin 2 to Front MODEL-X IN4     (K3 = out4)
+#define FrontLeftMotorDirPin1 36  //Front Left Motor direction pin 1 to Front MODEL-X IN1    (K1 = out1)
+#define FrontLeftMotorDirPin2 37  //Front Left Motor direction pin 2 to Front MODEL-X IN2    (K1 = out2)
+#define FrontRightMotorDirPin1 42 //Front Right Motor direction pin 1 to Front MODEL-X IN3     (K3 = out3)
+#define FrontRightMotorDirPin2 43 //Front Right Motor direction pin 2 to Front MODEL-X IN4     (K3 = out4)
 
 // Front motors' encoders
 #define encA_FR 34 // Encoder A for front right motor

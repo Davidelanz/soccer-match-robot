@@ -1,5 +1,5 @@
-
-import serial
+ #need to install pyserial -> "pip install pyserial"
+import serial 
 import time
 import threading
 
@@ -89,7 +89,7 @@ def waitForArduino():
 # ====================
 # the program
 
-
+# ----- Set the correct port
 setupSerial(115200, "/dev/ttyACM0")
 count = 0
 prevTime = time.time()
