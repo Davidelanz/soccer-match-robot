@@ -56,14 +56,14 @@ Serial.begin(115200); // set up Serial library at 115200 bps
   pinMode(vel_FrontRight, OUTPUT);
 
   // Encoders pins
-  pinMode(encA_RL, OUTPUT);
+  /*pinMode(encA_RL, OUTPUT);
   pinMode(encB_RL, OUTPUT);
   pinMode(encA_RR, OUTPUT);
   pinMode(encB_RR, OUTPUT);
   pinMode(encA_FL, OUTPUT);
   pinMode(encB_FL, OUTPUT);
   pinMode(encA_FR, OUTPUT);
-  pinMode(encB_FR, OUTPUT);
+  pinMode(encB_FR, OUTPUT);*/
 
   Serial.println("<Arduino is ready>");
   //Serial.flush();
