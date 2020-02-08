@@ -9,76 +9,11 @@ from geometry_msgs.msg import Twist
 
 import sys, select, termios, tty
 
-msg = """
-Reading from the keyboard  and Publishing to Twist!
----------------------------
-Moving around:
-   u    i    o
-   j    k    l
-   m    ,    .
-
-For Holonomic mode (strafing), hold down the shift key:
----------------------------
-   Q	W    E
-   A	S    D
-   Z	X    C
-
-t : up (+z)
-b : down (-z)
-
-anything else : stop
-
-q/z : increase/decrease max speeds by 10%
-w/x : increase/decrease only linear speed by 10%
-e/c : increase/decrease only angular speed by 10%
-
-CTRL-C to quit
-"""
-
-moveBindings = {
-        'i':(1,0,0,0),
-        'o':(1,0,0,-1),
-        'j':(0,0,0,1),
-        'l':(0,0,0,-1),
-        'u':(1,0,0,1),
-        ',':(-1,0,0,0),
-        '.':(-1,0,0,1),
-        'm':(-1,0,0,-1),
-        'E':(1,-1,0,0),
-        'W':(1,0,0,0),
-        'A':(0,1,0,0),
-        'D':(0,-1,0,0),
-        'Q':(1,1,0,0),
-        'X':(-1,0,0,0),
-        'C':(-1,-1,0,0),
-        'Z':(-1,1,0,0),
-        't':(0,0,1,0),
-        'b':(0,0,-1,0),
-    }
-
-speedBindings={
-        'q':(1.1,1.1),
-        'z':(.9,.9),
-        'w':(1.1,1),
-        'x':(.9,1),
-        'e':(1,1.1),
-        'c':(1,.9),
-    }
-
-def getKey():
-    tty.setraw(sys.stdin.fileno())
-    select.select([sys.stdin], [], [], 0)
-    key = sys.stdin.read(1)
-    termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
-    return key
-
-
 def vels(speed,turn):
     return "currently:\tspeed %s\tturn %s " % (speed,turn)
 
 if __name__=="__main__":
     settings = termios.tcgetattr(sys.stdin)
-    key = 'h' 
     pub = rospy.Publisher('cmd_vel', Twist, queue_size = 1)
     rospy.init_node('teleop_twist_keyboard')
 
@@ -89,49 +24,39 @@ if __name__=="__main__":
     z = 0
     th = 0
     status = 0
-    sign = -1
+    sign = -1       # used for direction commutation
     try:
-        print(msg)
-        print(vels(speed,turn))
         while(1):
-            #key = getKey()
-            if key in moveBindings.keys():
-                x = moveBindings[key][0]
-                y = moveBindings[key][1]
-                z = moveBindings[key][2]
-                th = moveBindings[key][3]
-            elif key in speedBindings.keys():
-                speed = speed * speedBindings[key][0]
-                turn = turn * speedBindings[key][1]
-
-                print(vels(speed,turn))
-                if (status == 14):
-                    print(msg)
-                status = (status + 1) % 15
-            else:
-                x = 0
-                y = 0
-                z = 0
-                th = 0
-                if (key == '\x03'):
-                    break
-
             twist = Twist()
             sign = sign * -1
-            #for x in range(2):
-            # Angular phase -  counter-clockwise rotation only
-            # twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
-            # twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 5 #* sign
-
-            # pub.publish(twist)
-            # rospy.sleep(0.25)
-            # Linear phase - right lateral translation
-            twist.linear.x = 0; twist.linear.y = 5 #* speed #* sign
-            twist.linear.z = 0
-            twist.angular.x = 0.33 ; twist.angular.y = 0; twist.angular.z = 0            
+     
+            
+            # Robot-Ball alignment -> Angular phase (counter-clockwise rotation only)
+            twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
+            twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 5 #* sign
             pub.publish(twist)
-            rospy.sleep(0.75)
-  
+            rospy.sleep(1.5)
+
+            # Ball approach -> get in proximity of the ball ()
+            twist.linear.x = 5; twist.linear.y = 0; twist.linear.z = 0
+            twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 0
+            pub.publish(twist)
+            rospy.sleep(1.5)
+
+            # Robot-Ball-Target alignment -> rotation around target (both translation and rotation)
+            twist.linear.x = 0; twist.linear.y = 5; twist.linear.z = 0            
+            twist.angular.x = 0.33  # This gain is used to decouple the front and rear wheels
+            twist.angular.y = 0; twist.angular.z = 0
+            pub.publish(twist)
+            rospy.sleep(1)
+
+
+            # Kick ball -> go ahead and hit ball
+            twist.linear.x = 5; twist.linear.y = 0; twist.linear.z = 0
+            twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 0
+            pub.publish(twist)
+            rospy.sleep(0.2)
+
             # twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
             # twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 0            
             # pub.publish(twist)
