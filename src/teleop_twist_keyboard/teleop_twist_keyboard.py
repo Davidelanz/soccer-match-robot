@@ -38,8 +38,8 @@ CTRL-C to quit
 moveBindings = {
         'i':(1,0,0,0),
         'o':(1,0,0,-1),
-        'j':(0,0,0,1),
-        'l':(0,0,0,-1),
+        'R':(0,0,0,1),
+        'T':(0,0,0,-1),
         'u':(1,0,0,1),
         ',':(-1,0,0,0),
         '.':(-1,0,0,1),
@@ -118,7 +118,7 @@ if __name__=="__main__":
 
             twist = Twist()
             twist.linear.x = x*speed; twist.linear.y = y*speed; twist.linear.z = z*speed
-            twist.angular.x = 1; twist.angular.y = 0; twist.angular.z = th*turn
+            twist.angular.x = 1; twist.angular.y = 0; twist.angular.z = th*turn*speed
             pub.publish(twist)
 
     except Exception as e:
