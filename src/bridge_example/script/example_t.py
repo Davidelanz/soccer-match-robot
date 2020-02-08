@@ -31,14 +31,14 @@ class image_feature:
         self.subscriber = rospy.Subscriber("/raspicam_node/image/compressed",
             CompressedImage, self.callback,  queue_size = 1)
         if VERBOSE :
-            print "subscribed to /raspicam_node/image/compressed"
+            print("subscribed to /raspicam_node/image/compressed")
 
 
     def callback(self, ros_data):
         '''Callback function of subscribed topic. 
         Here images get converted and features detected'''
         if VERBOSE :
-            print 'received image of type: "%s"' % ros_data.format
+            print('received image of type: "%s"' % ros_data.format)
 
         #### direct conversion to CV2 ####
         np_arr = np.fromstring(ros_data.data, np.uint8)
@@ -57,7 +57,7 @@ def main(args):
     try:
         rospy.spin()
     except KeyboardInterrupt:
-        print "Shutting down ROS Image feature detector module"
+        print("Shutting down ROS Image feature detector module")
     cv2.destroyAllWindows()
 
 if __name__ == '__main__':

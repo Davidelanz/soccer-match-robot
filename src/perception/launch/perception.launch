@@ -1,0 +1,6 @@
+<launch>
+
+  <node type="percpetion_node" pkg="perception" name="percpetion_node" output="screen">
+    <!--remap from="" to=""/>-->
+  </node>
+</launch>
