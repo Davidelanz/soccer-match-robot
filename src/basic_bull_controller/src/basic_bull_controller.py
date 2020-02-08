@@ -33,13 +33,14 @@ if __name__=="__main__":
             
             # Robot-Ball alignment -> Angular phase (counter-clockwise rotation only)
             twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
-            twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 5 #* sign
+            twist.angular.x = 1 # This gain is used to decouple the front and rear wheels, therefore, it has to be set to 1 if not decoupling 
+            twist.angular.y = 0; twist.angular.z = 5 #* sign
             pub.publish(twist)
             rospy.sleep(1.5)
 
             # Ball approach -> get in proximity of the ball ()
             twist.linear.x = 5; twist.linear.y = 0; twist.linear.z = 0
-            twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 0
+            twist.angular.x = 1; twist.angular.y = 0; twist.angular.z = 0
             pub.publish(twist)
             rospy.sleep(1.5)
 
@@ -53,7 +54,7 @@ if __name__=="__main__":
 
             # Kick ball -> go ahead and hit ball
             twist.linear.x = 5; twist.linear.y = 0; twist.linear.z = 0
-            twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 0
+            twist.angular.x = 1; twist.angular.y = 0; twist.angular.z = 0
             pub.publish(twist)
             rospy.sleep(0.2)
 

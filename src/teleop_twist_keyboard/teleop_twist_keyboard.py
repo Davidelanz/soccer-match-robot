@@ -118,7 +118,7 @@ if __name__=="__main__":
 
             twist = Twist()
             twist.linear.x = x*speed; twist.linear.y = y*speed; twist.linear.z = z*speed
-            twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = th*turn
+            twist.angular.x = 1; twist.angular.y = 0; twist.angular.z = th*turn
             pub.publish(twist)
 
     except Exception as e:
