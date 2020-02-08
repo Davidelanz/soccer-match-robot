@@ -7,7 +7,7 @@ The aim of this project is to build a system able to play a robotic soccer match
    - Task planning
    - Low level driver control
 
-## Guideline
+## Guidelines
 
 Think about the possible general architecture of the system, defining the main blocks constituting your model.
 - Develop a ROS Module that recognize a red object and track it.
