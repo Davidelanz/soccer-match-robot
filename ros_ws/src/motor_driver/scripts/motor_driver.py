@@ -18,20 +18,40 @@ class driver:
     # get cmd_vel message, and get linear velocity and angular velocity
     def get_cmd_vel(self, data):
         x = data.linear.x
-	y = data.linear.y
+        y = data.linear.y
         angular = data.angular.z
         self.send_cmd_to_arduino(x, y, angular)
 
     # translate x, and angular velocity to PWM signal of each wheels, and send to arduino
     def send_cmd_to_arduino(self, x, y, angular):
         # calculate right and left wheels' signal
+    # if (angular = 0):
+        front_left = int((x + y)  + angular)*75
+        front_right = int((x - y) - angular)*75
+        rear_left = int((x - y)   + angular)*75
+        rear_right = int((x + y)  - angular)*75
+	# elif( angular > 0):
+    #     front_left = int((x + y)*75)
+    #     front_right = int((x - y)*75)
+    #     rear_left = int((x - y)*75)
+    #     rear_right = int((x + y )*75)
+    # else:
+    #     front_left = int((x + y)*75)
+    #     front_right = int((x - y)*75)
+    #     rear_left = int((x - y)*75)
+    #     rear_right = int((x + y )*75)
+        
+    	# Saturate velocities if over 255
+        if front_left > 255:
+            front_left = 255
+        if front_right > 255:
+            front_right = 255
+        if rear_left > 255:
+            rear_left = 255
+        if rear_right > 255:
+            rear_right = 255
 
-	front_left = int((x + y)*75)
-	front_right = int((x - y)*75)
-
-	rear_left = int((x - y)*75)
-	rear_right = int((x + y )*75)
-	
+  
  #      right = int((x) * 50 + (y) * 50 )
  #      left = int((x) * 50 + (y) * 50)
         # format for arduino

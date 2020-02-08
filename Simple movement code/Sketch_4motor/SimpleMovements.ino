@@ -94,6 +94,14 @@ void turnAround()
 {
   Serial.println("< Turning around >");
   // rear left motor clockwise
+  digitalWrite(FrontLeftMotorDirPin1, HIGH);
+  digitalWrite(FrontLeftMotorDirPin2, LOW);
+  analogWrite(vel_FrontLeft, 200);
+  // front right motor counter-clockwise
+  digitalWrite(FrontRightMotorDirPin1, LOW);
+  digitalWrite(FrontRightMotorDirPin2, HIGH);
+  analogWrite(vel_FrontRight, 200);
+  
   digitalWrite(RearLeftMotorDirPin1, HIGH);
   digitalWrite(RearLeftMotorDirPin2, LOW);
   analogWrite(vel_RearLeft, 200);
@@ -102,13 +110,7 @@ void turnAround()
   digitalWrite(RearRightMotorDirPin2, HIGH);
   analogWrite(vel_RearRight, 200);
   // front left motor clockwise
-  digitalWrite(FrontLeftMotorDirPin1, HIGH);
-  digitalWrite(FrontLeftMotorDirPin2, LOW);
-  analogWrite(vel_FrontLeft, 200);
-  // front right motor counter-clockwise
-  digitalWrite(FrontRightMotorDirPin1, LOW);
-  digitalWrite(FrontRightMotorDirPin2, HIGH);
-  analogWrite(vel_FrontRight, 200);
+  
 }
 
 void goLeft()
