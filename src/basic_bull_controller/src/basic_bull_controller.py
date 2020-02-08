@@ -78,7 +78,7 @@ def vels(speed,turn):
 
 if __name__=="__main__":
     settings = termios.tcgetattr(sys.stdin)
-
+    key = 'h' 
     pub = rospy.Publisher('cmd_vel', Twist, queue_size = 1)
     rospy.init_node('teleop_twist_keyboard')
 
@@ -89,12 +89,12 @@ if __name__=="__main__":
     z = 0
     th = 0
     status = 0
-
+    sign = -1
     try:
         print(msg)
         print(vels(speed,turn))
         while(1):
-            key = getKey()
+            #key = getKey()
             if key in moveBindings.keys():
                 x = moveBindings[key][0]
                 y = moveBindings[key][1]
@@ -117,9 +117,27 @@ if __name__=="__main__":
                     break
 
             twist = Twist()
-            twist.linear.x = x*speed; twist.linear.y = y*speed; twist.linear.z = z*speed
-            twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = th*turn
+            sign = sign * -1
+            #for x in range(2):
+            # Angular phase -  counter-clockwise rotation only
+            # twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
+            # twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 5 #* sign
+
+            # pub.publish(twist)
+            # rospy.sleep(0.25)
+            # Linear phase - right lateral translation
+            twist.linear.x = 0; twist.linear.y = 5 #* speed #* sign
+            twist.linear.z = 0
+            twist.angular.x = 0.33 ; twist.angular.y = 0; twist.angular.z = 0            
             pub.publish(twist)
+            rospy.sleep(0.75)
+  
+            # twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
+            # twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 0            
+            # pub.publish(twist)
+            # rospy.sleep(2)
+
+
 
     except Exception as e:
         print(e)
