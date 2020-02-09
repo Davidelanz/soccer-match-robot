@@ -22,22 +22,43 @@ Think about the possible general architecture of the system, defining the main b
 
 - After having setup the vnc server [https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-18-04]
 
-- Run:
+- Run in laptop's terminal:
 
 ``` ssh rasp@192.168.43.18 ```
 
 Password is "rasp"
 
-- Then launch the vnc server
+- Then launch the vnc server from the pi's root with:
 
-``` vnc server ```
+``` vncserver ```
 
-- Logout from the rasp root and setup the vnc connection
+- Logout from the rasp's root and setup the vnc connection between laptop and pi by inserting in the laptop's terminal:
 
 ``` ssh -L 5901:127.0.0.1:5901 -C -N -l rasp 192.168.43.18 ```
 
 - Then open a vnc client and connect to 
+
 ``` localhost:5901 ```
+
+
+ps: working on using only SSH access without a VNC server
+
+### Launch the rosnode necessary to remotely control the robot
+
+- Once logged in with your vnc client, open a terminal and run:
+
+```roscore ```
+
+- In another terminal launch the motor driver node:
+
+``` rosrun motor_driver motor_driver.py ```
+
+- In another terminal launch the teleop_twist_keyboard node and follow the instruction at screen:
+
+``` rosrun teleop_twist_keyboard teleop_twist_keyboard.py ```
+
+remember to increase the speed (w key) at leat to 2/3 to get a decent feedback from the motor 
+
 
 
 
