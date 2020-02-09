@@ -18,6 +18,9 @@ Think about the possible general architecture of the system, defining the main b
    - [https://www.learnopencv.com/blob-detection-using-opencv-python-c/]
 
 
+### Load the motor driver arduino sketch
+Simply load the motor_driver.ino sketch on the board. Remeber to choose the "Arduino due - programming port" board and "/dev/ttyACM0" port.
+
 ### Connect to Raspberry via SSH 
 
 - After having setup the vnc server [https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-18-04]
