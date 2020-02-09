@@ -18,6 +18,36 @@ Think about the possible general architecture of the system, defining the main b
    - [https://www.learnopencv.com/blob-detection-using-opencv-python-c/]
 
 
+### Connect to Raspberry via SSH 
+
+- After having setup the vnc server [https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-18-04]
+
+- Run:
+
+``` ssh rasp@192.168.43.18 ```
+
+Password is "rasp"
+
+- Then launch the vnc server
+
+``` vnc server ```
+
+- Logout from the rasp root and setup the vnc connection
+
+``` ssh -L 5901:127.0.0.1:5901 -C -N -l rasp 192.168.43.18 ```
+
+- Then open a vnc client and connect to 
+``` localhost:5901 ```
+
+
+
+
+
+### Troubleshoot:
+ssh not enabled on Rasp - [https://linuxize.com/post/how-to-enable-ssh-on-ubuntu-18-04/] [https://askubuntu.com/questions/921258/how-to-enable-ssh-on-boot-in-ubuntu-mate]
+
+
+
 
 ## Authors
 * Davide Lanza       - davidel96@hotmail.it
@@ -26,5 +56,5 @@ Think about the possible general architecture of the system, defining the main b
 
 
 
-EMARO Advanced Robotics Master - 2nd year  
+EMARO Advanced Robotics Master - 2nd year
 University of Genoa
