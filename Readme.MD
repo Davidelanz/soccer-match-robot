@@ -23,7 +23,8 @@ Simply load the motor_driver.ino sketch on the board. Remeber to choose the "Ard
 
 ### Connect to Raspberry via SSH 
 
-- After having setup the vnc server [https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-18-04]
+- After having setup the vnc server 
+   - [https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-18-04]
 
 - Run in laptop's terminal:
 
@@ -68,7 +69,10 @@ remember to increase the speed (w key) at leat to 2/3 to get a decent feedback f
 
 
 ### Troubleshoot:
-ssh not enabled on Rasp - [https://linuxize.com/post/how-to-enable-ssh-on-ubuntu-18-04/] [https://askubuntu.com/questions/921258/how-to-enable-ssh-on-boot-in-ubuntu-mate]
+ssh not enabled on Rasp 
+   - [https://linuxize.com/post/how-to-enable-ssh-on-ubuntu-18-04/]
+   - [https://askubuntu.com/questions/921258/how-to-enable-ssh-on-boot-in-ubuntu-mate]
+
 
 
 
