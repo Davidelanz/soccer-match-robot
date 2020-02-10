@@ -31,9 +31,9 @@ class driver:
         else:
             return x
 
-    # translate x, y and angular velocity to PWM signal of each wheels, and send to arduino
+    # Translate x, y and angular velocity to PWM signal of each wheels, and send to arduino
     def send_cmd_to_arduino(self, x, y, angular, rotation):
-        # calculate right and left wheels' signal
+        # Calculate right and left wheels' signal
         # if (angular = 0):
         front_left = int((x + y)  + angular)*75
         front_right = int((x - y) - angular)*75
