@@ -85,6 +85,16 @@ Password is "rasp"
 ``` export ROS_MASTER_URI=http://130.251.13.117:11311/ ```
 
 
+### Cameras
+
+The ```raspicam_node``` supports dynamically reconfiguring the camera parameters.
+
+- Run the dynamic reconfigure node on a connected computer:
+
+``` rosrun rqt_reconfigure rqt_reconfigure ```
+
+
+
 
 
 
