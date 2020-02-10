@@ -21,14 +21,20 @@ Think about the possible general architecture of the system, defining the main b
 ### Load the motor driver arduino sketch
 Simply load the motor_driver.ino sketch on the board. Remeber to choose the "Arduino due - programming port" board and "/dev/ttyACM0" port.
 
-### Connect to Raspberry via SSH 
+### Connect to Raspberry via SSH and VNC Server
 
 - After having setup the vnc server 
    - [https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-18-04]
 
 - Run in laptop's terminal:
 
+Redmi's wifi:
+
 ``` ssh rasp@192.168.43.18 ```
+
+Laboratorium's wifi:
+
+``` ssh rasp@130.251.13.117 ```
 
 Password is "rasp"
 
@@ -44,8 +50,43 @@ Password is "rasp"
 
 ``` localhost:5901 ```
 
+password is "arparpar"
 
-ps: working on using only SSH access without a VNC server
+### Connect Raspberry's ros master to laptop ros node only via SSH 
+
+- Run in laptop's terminal:
+
+Redmi's wifi:
+
+``` ssh rasp@192.168.43.18 ```
+
+Laboratorium's wifi:
+
+``` ssh rasp@130.251.13.117 ```
+
+Password is "rasp"
+
+- In rasp's terminal, export the rasp ip with:
+
+ ``` export ROS_IP=130.251.13.117 ```
+
+- In rasp's terminal, run:
+
+``` roscore ```
+
+- Get laptop's ip with:
+
+``` hostname -I ```
+
+- Run in laptop's terminal: 
+   - Laptop's ip
+``` export ROS_IP=130.251.13.134 ``` 
+   - Rasp's ip 
+``` export ROS_MASTER_URI=http://130.251.13.117:11311/ ```
+
+
+
+
 
 ### Launch the rosnode necessary to remotely control the robot
 
