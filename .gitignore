@@ -1,3 +1,13 @@
+# Ignore src packages
+src/bond_core/
+src/class_loader/
+src/common_msgs/
+src/diagnostics/
+src/dynamic_reconfigure/
+src/image_common/
+src/image_transport_plugins/
+src/pluginlib/
+src/vision_opencv/
  
 .catkin_tools/
 .vscode/
