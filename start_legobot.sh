@@ -8,7 +8,7 @@ export ROS_IP=$IP
 echo $ROS_IP
 
 echo "setting ROS_HOSTNAME to:"
-export ROS_HOSTNAME=$IP
+# export ROS_HOSTNAME=$IP
 echo $ROS_HOSTNAME
 
 echo "setting ROS_MASTER_URI to:"
