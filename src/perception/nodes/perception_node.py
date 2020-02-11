@@ -78,8 +78,6 @@ class image_feature:
         cY = int(cY-frame_height/2)
         self.ballX_pub.publish(cX)
 
-        ################## DEBUG STUFF
-
         # Print the center of mass coordinates w.r.t the center of image and diplay it
         if VERBOSE:
             print (cX, cY)
@@ -170,7 +168,7 @@ def main(args):
     '''Initializes and cleanup ros node'''
     print("Starting ROS Image feature detector module")
     ic = image_feature()
-    rospy.init_node('image_feature', anonymous=True)
+    rospy.init_node('perception_node')
     r = rospy.Rate(1) # 1hz
     try:
         rospy.spin()

@@ -62,7 +62,7 @@ class driver:
             rear_right = self.get_sign(rear_right) * 255
 
         message = "{},{},{},{}*".format(front_left, front_right, rear_left, rear_right)
-        print message
+        print(message)
         # send by serial 
         self.ser.write(message)
 
