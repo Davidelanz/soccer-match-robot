@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>perception</name>
+  <name>robot_perception</name>
   <version>0.0.0</version>
-  <description>The Perception package</description>
+  <description>The Robot Perception package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <maintainer email="davide@todo.todo">davide</maintainer>

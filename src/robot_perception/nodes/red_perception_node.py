@@ -39,7 +39,7 @@ class image_feature:
         # topic where we publish
         #self.image_pub = rospy.Publisher("/output/image_raw/compressed",
         #    CompressedImage, queue_size=1)
-        self.ballX_pub = rospy.Publisher("ballX", Float32, queue_size=1)
+        self.redX_pub = rospy.Publisher("redX", Float32, queue_size=1)
 
         # subscribed Topic
         self.subscriber = rospy.Subscriber("/raspicam_node/image/compressed",
@@ -76,7 +76,7 @@ class image_feature:
         # Normalizing w.r.t the center
         cX = int(cX-frame_width/2) 
         cY = int(cY-frame_height/2)
-        self.ballX_pub.publish(cX)
+        self.redX_pub.publish(cX)
 
         # Print the center of mass coordinates w.r.t the center of image and diplay it
         if VERBOSE:
