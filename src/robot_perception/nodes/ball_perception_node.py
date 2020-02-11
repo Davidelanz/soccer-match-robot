@@ -48,12 +48,10 @@ class image_feature:
             print("subscribed to /raspicam_node/image/compressed")
 
         # define color ranges in HSV
-        self.lower_red = np.array([160, 140, 50])
-        self.upper_red = np.array([180, 255, 255])
-        self.lower_blue = np.array([110, 50, 50])
-        self.upper_blue = np.array([130, 255, 255])
-        self.lower_green = np.array([45, 140, 50])
-        self.upper_green = np.array([75, 255, 255])
+        self.bright_red_lower_bounds = (0, 100, 100)
+        self.bright_red_upper_bounds = (10, 255, 255)
+        self.dark_red_lower_bounds = (160, 100, 100)
+        self.dark_red_upper_bounds = (179, 255, 255)
 
     def callback(self, ros_data):
         '''Callback function of subscribed topic. 
@@ -70,23 +68,8 @@ class image_feature:
         # Image processing
         res = self.red_filtering(frame)
         # Detect centrode
-        cX, cY = self.detect_centrode(res)
-        # Write the point (cX,xY) on "res" image
-        try:
-            cv2.circle(res, (int(cX),int(cY)), 5, (255, 0, 0), -1)
-        except ValueError as error :
-            # E.g. cannot convert float NaN to integer
-            pass
-        # Normalizing w.r.t the center
-        cX = int(cX-frame_width/2) 
-        cY = int(cY-frame_height/2)
-        self.redX_pub.publish(cX)
-
-        # Print the center of mass coordinates w.r.t the center of image and diplay it
-        if VERBOSE:
-            print (cX, cY)
-            cmd = self.extraction(cX)
-            print(cmd)
+        frame = self.detect_ball(frame,res)
+        
         # Display the result
         if DISPLAY:
             cv2.imshow('frame', frame)
@@ -96,53 +79,40 @@ class image_feature:
 
     def red_filtering(self,frame):        
         # Adapted from 
-        # https://stackoverflow.com/questions/54425093/
-        # /how-can-i-find-the-center-of-the-pattern-and-the-distribution-of-a-color-around)
+        # https://stackoverflow.com/questions/42840526/opencv-python-red-ball-detection-and-tracking
+        #
+        # convert the input stream into HSV color space
+        hsv_conv_img = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        # then the image is blurred
+        hsv_blurred_img = cv2.medianBlur(hsv_conv_img,9,3)
+        # because hue wraps up and to extract as many "red objects" as possible,
+        # we define lower and upper boundaries for brighter and for darker red shades
+        bright_red_mask = cv2.inRange(hsv_blurred_img,self.bright_red_lower_bounds,self.bright_red_upper_bounds)
+        dark_red_mask   = cv2.inRange(hsv_blurred_img,self.dark_red_lower_bounds,  self.dark_red_upper_bounds)
+        # after masking the red shades out, I add the two images 
+        weighted_mask = cv2.addWeighted(bright_red_mask, 1.0, dark_red_mask, 1.0, 0.0)
+        # then the result is blurred
+        blurred_mask = cv2.GaussianBlur(weighted_mask,(9,9),3,3)
+        # some morphological operations (closing) to remove small blobs 
+        erode_element = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+        dilate_element = cv2.getStructuringElement(cv2.MORPH_RECT, (8, 8))
+        eroded_mask = cv2.erode(blurred_mask,erode_element)
+        dilated_mask = cv2.dilate(eroded_mask,dilate_element)
+        return dilated_mask 
 
-        # Convert BGR to HSV
-        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        # Threshold the HSV image to get only desired colors
-        mask = cv2.inRange(hsv, self.lower_red, self.upper_red)
-        # Bitwise-AND mask and original image
-        res = cv2.bitwise_and(frame, frame, mask=mask)
-        # Smooth and blur "res" image
-        res = cv2.medianBlur(res,15)
-            # Or also:
-            # res = cv2.GaussianBlur(res,(15,15),0)
-            # res = cv2.bilateralFilter(res,15,75,75)
-        # Erode and convert it for noise reduction
-        kernel = np.ones((2,2),np.uint8)
-        res = cv2.morphologyEx(res, cv2.MORPH_OPEN, kernel)
-        res = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
-        res = cv2.convertScaleAbs(res)
-        return res
-
-    def detect_centrode(self,res):        
+    def detect_ball(self,frame,res):        
         # Adapted from 
-        # https://stackoverflow.com/questions/54425093/
-        # /how-can-i-find-the-center-of-the-pattern-and-the-distribution-of-a-color-around)
-        contours, hierarchy = cv2.findContours(res, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        areas = []
-        centersX = []
-        centersY = []
-        for cnt in contours:
-            areas.append(cv2.contourArea(cnt))
-            M = cv2.moments(cnt)
-            try:
-                centersX.append(int(M["m10"] / M["m00"]))
-                centersY.append(int(M["m01"] / M["m00"]))    
-            except ZeroDivisionError as error:
-                # Output expected ZeroDivisionErrors.
-                centersX.append(int(M["m10"]))
-                centersY.append(int(M["m01"]))   
-                pass    
-        full_areas = np.sum(areas)
-        acc_X = 0
-        acc_Y = 0
-        for i in range(len(areas)):
-            acc_X += centersX[i] * (areas[i]/full_areas) 
-            acc_Y += centersY[i] * (areas[i]/full_areas)
-        return acc_X,acc_Y
+        # https://stackoverflow.com/questions/42840526/opencv-python-red-ball-detection-and-tracking
+        #
+        # on the color-masked, blurred and morphed image I apply the cv2.HoughCircles-method to detect circle-shaped objects 
+        detected_circles = cv2.HoughCircles(res, cv2.HOUGH_GRADIENT, 1, 150, param1=100, param2=20, minRadius=20, maxRadius=200)
+        if detected_circles is not None:
+            for circle in detected_circles[0, :]:
+                circled_orig = cv2.circle(frame, (circle[0], circle[1]), circle[2], (0,255,0),thickness=3)
+            return circled_orig
+        else:
+            return frame
+
 
     
     def extraction(self, cX):
