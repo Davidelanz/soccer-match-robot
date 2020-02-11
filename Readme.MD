@@ -58,17 +58,17 @@ password is "arparpar"
 
 Redmi's wifi:
 
-``` ssh rasp@192.168.43.18 ```
+``` ssh pi@legobot.local ```
 
 Laboratorium's wifi:
 
-``` ssh rasp@130.251.13.117 ```
+``` ssh pi@legobot.local ```
 
 Password is "rasp"
 
 - In rasp's terminal, export the rasp ip with:
 
- ``` export ROS_IP=130.251.13.117 ```
+ ``` export ROS_IP=localhost ```
 
 - In rasp's terminal, run:
 
