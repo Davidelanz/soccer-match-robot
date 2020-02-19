@@ -9,7 +9,7 @@
     <param name="io_method" value="mmap"/>
   </node>
 
-  <node type="perception_node.py" pkg="perception" name="perception_node" output="screen">
+  <node type="ball_perception_node.py" pkg="robot_perception" name="ball_perception_node" output="screen">
     <remap from="/raspicam_node/image/compressed" to="/usb_cam/image_raw/compressed"/>
   </node>
 

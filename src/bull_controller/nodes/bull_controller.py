@@ -72,8 +72,8 @@ def main(args):
     print("Starting ROS bull controller node")
     rospy.init_node('controller')
     
-    sub =  rospy.Subscriber('ballX', Float32, callback)
-    print("Subscribed to ballX")
+    sub =  rospy.Subscriber('redX', Float32, callback)
+    print("Subscribed to redX")
 
     pub = rospy.Publisher('cmd_vel', Twist, queue_size = 1)
     print("Publisher on cmd_vel")

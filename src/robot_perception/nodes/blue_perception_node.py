@@ -39,7 +39,7 @@ class image_feature:
         # topic where we publish
         #self.image_pub = rospy.Publisher("/output/image_raw/compressed",
         #    CompressedImage, queue_size=1)
-        self.ballX_pub = rospy.Publisher("ballX", Float32, queue_size=1)
+        self.greenX_pub = rospy.Publisher("blueX", Float32, queue_size=1)
 
         # subscribed Topic
         self.subscriber = rospy.Subscriber("/raspicam_node/image/compressed",
@@ -68,7 +68,7 @@ class image_feature:
         frame_width = frame.shape[1]
         frame_channels = frame.shape[2]
         # Image processing
-        res = self.red_filtering(frame)
+        res = self.blue_filtering(frame)
         # Detect centrode
         cX, cY = self.detect_centrode(res)
         # Write the point (cX,xY) on "res" image
@@ -76,7 +76,7 @@ class image_feature:
         # Normalizing w.r.t the center
         cX = int(cX-frame_width/2) 
         cY = int(cY-frame_height/2)
-        self.ballX_pub.publish(cX)
+        self.greenX_pub.publish(cX)
 
         # Print the center of mass coordinates w.r.t the center of image and diplay it
         if VERBOSE:
@@ -90,7 +90,7 @@ class image_feature:
             cv2.waitKey(2)
 
 
-    def red_filtering(self,frame):        
+    def blue_filtering(self,frame):        
         # Adapted from 
         # https://stackoverflow.com/questions/54425093/
         # /how-can-i-find-the-center-of-the-pattern-and-the-distribution-of-a-color-around)
@@ -98,7 +98,7 @@ class image_feature:
         # Convert BGR to HSV
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         # Threshold the HSV image to get only desired colors
-        mask = cv2.inRange(hsv, self.lower_red, self.upper_red)
+        mask = cv2.inRange(hsv, self.lower_blue, self.upper_blue)
         # Bitwise-AND mask and original image
         res = cv2.bitwise_and(frame, frame, mask=mask)
         # Smooth and blur "res" image

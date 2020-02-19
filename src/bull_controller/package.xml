@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>basic_bull_controller</name>
+  <name>bull_controller</name>
   <version>0.0.0</version>
-  <description>The basic_bull_controller package</description>
+  <description>The bull_controller package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
