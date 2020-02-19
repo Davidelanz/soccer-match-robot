@@ -69,13 +69,13 @@ Password is ```carlo_conti```
 
 - You can now launch the controller on another terminal of the raspberry with:
 
-``` rosrun basic_bull_controller bull_controller.py ```
+``` rosrun bull_controller bull_controller.py ```
 
 - In laptop's terminal run the raspicam node and the perception node:
 
 ``` roslaunch raspicam_node camerav2_410x308_10fps.launch ```
 
-``` rosrun perception perception_node.py ```
+``` rosrun robot_perception red_perception_node.py ```
 
 
 Note: remember that you have to export the raspberry's ip for each terminal you need to use and export the laptop's ip and connect it to the ros master on the raspberry on each laptop's terminal
