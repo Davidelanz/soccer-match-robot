@@ -21,68 +21,37 @@ Think about the possible general architecture of the system, defining the main b
 ### Load the motor driver arduino sketch
 Simply load the motor_driver.ino sketch on the board. Remeber to choose the "Arduino due - programming port" board and "/dev/ttyACM0" port.
 
-### Connect to Raspberry via SSH and VNC Server
+### Connect Raspberry's ros master to laptop ros node via SSH 
+Prerequisite: the raspberry must be connected on the same network of the laptop
 
-- After having setup the vnc server 
-   - [https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-18-04]
-
-- Run in laptop's terminal:
-
-Redmi's wifi:
-
-``` ssh rasp@192.168.43.18 ```
-
-Laboratorium's wifi:
-
-``` ssh rasp@130.251.13.117 ```
-
-Password is "rasp"
-
-- Then launch the vnc server from the pi's root with:
-
-``` vncserver ```
-
-- Logout from the rasp's root and setup the vnc connection between laptop and pi by inserting in the laptop's terminal:
-
-``` ssh -L 5901:127.0.0.1:5901 -C -N -l rasp 192.168.43.18 ```
-
-- Then open a vnc client and connect to 
-
-``` localhost:5901 ```
-
-password is "arparpar"
-
-### Connect Raspberry's ros master to laptop ros node only via SSH 
-
-- Run in laptop's terminal:
-
-Redmi's wifi:
+- Access the pi via SSH by running in laptop's terminal:
 
 ``` ssh pi@legobot.local ```
 
-Laboratorium's wifi:
+Password is "carlo_conti"
 
-``` ssh pi@legobot.local ```
-
-Password is "rasp"
-
-- In rasp's terminal, export the rasp ip with:
+- Once got in, in rasp's terminal, export the rasp ip with:
 
  ``` export ROS_IP=localhost ```
 
-- In rasp's terminal, run:
+- Run the rosmaster node in rasp's terminal by running:
 
 ``` roscore ```
 
-- Get laptop's ip with:
+- Get back to the laptop and export its ip:
+
+``` export ROS_IP=130.251.13.134 ``` 
+
+``` export ROS_IP=localhost ``` 
+
+- Connect with the ros master on the pi with:
+ 	- Here you have to put the pi's ip
+``` export ROS_MASTER_URI=http://130.251.13.117:11311/ ```
+
+
+- If you need to get some machine's ip you can run
 
 ``` hostname -I ```
-
-- Run in laptop's terminal: 
-   - Laptop's ip
-``` export ROS_IP=130.251.13.134 ``` 
-   - Rasp's ip 
-``` export ROS_MASTER_URI=http://130.251.13.117:11311/ ```
 
 
 ### Cameras
@@ -100,13 +69,22 @@ The ```raspicam_node``` supports dynamically reconfiguring the camera parameters
 
 ### Launch the rosnode necessary to remotely control the robot
 
-- Once logged in with your vnc client, open a terminal and run:
 
-```roscore ```
-
-- In another terminal launch the motor driver node:
+- In the pi's terminal, launch the motor driver node:
 
 ``` rosrun motor_driver motor_driver.py ```
+
+- You can now launch the controller on another terminal of the raspberry with:
+
+``` rosrun basic_bull_controller bull_controller.py ```
+
+- In laptop's terminal run the raspicam node and the perception node:
+
+``` roslaunch raspicam_node camerav2_410x308_10fps.launch ```
+
+``` rosrun perception perception_node.py ```
+
+
 
 - In another terminal launch the teleop_twist_keyboard node and follow the instruction at screen:
 
