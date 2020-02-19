@@ -28,7 +28,7 @@ Prerequisite: the raspberry must be connected on the same network of the laptop
 
 ``` ssh pi@legobot.local ```
 
-Password is "carlo_conti"
+Password is ```carlo_conti```
 
 - Once got in, in rasp's terminal, export the rasp ip with:
 
@@ -40,12 +40,18 @@ Password is "carlo_conti"
 
 - Get back to the laptop and export its ip:
 
+   - For laboratorium's wifi
+
 ``` export ROS_IP=130.251.13.134 ``` 
+
+
+   - Or in general
 
 ``` export ROS_IP=localhost ``` 
 
 - Connect with the ros master on the pi with:
  	- Here you have to put the pi's ip
+
 ``` export ROS_MASTER_URI=http://130.251.13.117:11311/ ```
 
 
@@ -54,20 +60,7 @@ Password is "carlo_conti"
 ``` hostname -I ```
 
 
-### Cameras
-
-The ```raspicam_node``` supports dynamically reconfiguring the camera parameters.
-
-- Run the dynamic reconfigure node on a connected computer:
-
-``` rosrun rqt_reconfigure rqt_reconfigure ```
-
-
-
-
-
-
-### Launch the rosnode necessary to remotely control the robot
+### Launch the rosnode necessary to allow the robot to move around autonomously and 
 
 
 - In the pi's terminal, launch the motor driver node:
@@ -86,11 +79,28 @@ The ```raspicam_node``` supports dynamically reconfiguring the camera parameters
 
 
 
-- In another terminal launch the teleop_twist_keyboard node and follow the instruction at screen:
+
+
+### Cameras
+
+The ```raspicam_node``` supports dynamically reconfiguring the camera parameters.
+
+- Run the dynamic reconfigure node on a connected computer:
+
+``` rosrun rqt_reconfigure rqt_reconfigure ```
+
+### Control the robot with keyboard
+After having loaded the arduino sketch and followed the instruction on how to Connect Raspberry's ros master to laptop ros node via SSH
+
+- In the pi's terminal, launch the motor driver node:
+
+``` rosrun motor_driver motor_driver.py ```
+
+- In laptop's terminal launch the teleop_twist_keyboard node and follow the instruction at screen:
 
 ``` rosrun teleop_twist_keyboard teleop_twist_keyboard.py ```
 
-remember to increase the speed (w key) at leat to 2/3 to get a decent feedback from the motor 
+Remember to increase the speed (w key) at least to 2/3 to get a decent feedback from the motor
 
 
 
