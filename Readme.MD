@@ -60,7 +60,7 @@ Password is ```carlo_conti```
 ``` hostname -I ```
 
 
-### Launch the rosnode necessary to allow the robot to move around autonomously and 
+### Launch the rosnode necessary to allow the robot to move around autonomously
 
 
 - In the pi's terminal, launch the motor driver node:
@@ -78,6 +78,7 @@ Password is ```carlo_conti```
 ``` rosrun perception perception_node.py ```
 
 
+Note: remember that you have to export the raspberry's ip for each terminal you need to use and export the laptop's ip and connect it to the ros master on the raspberry on each laptop's terminal
 
 
 
