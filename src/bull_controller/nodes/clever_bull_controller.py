@@ -9,23 +9,23 @@ from std_msgs.msg import Float32
 
 
 ballX = 0   # Ball
-greenX = 0  # Goal
+blueX = 0  # Goal
 dist = 999    # Distance
 
 def callbackBall(data):
     global ballX
     ballX = data.data 
-    rospy.loginfo("Ball callback data is %f", data.data)
+    # rospy.loginfo("Ball callback data is %f", data.data)
 
 def callbackGoal(data):
-    global greenX
-    greenX = data.data 
-    rospy.loginfo("Goal callback data is %f", data.data)
+    global blueX
+    blueX = data.data 
+    # rospy.loginfo("Goal callback data is %f", data.data)
 
 def callbackDist(data):
     global dist
     dist = data.data 
-    rospy.loginfo("Distance callback data is %f", data.data)
+    # rospy.loginfo("Distance callback data is %f", data.data)
     
 def planner(pub, xMinCenter, xMaxCenter, xMinOutlier, xMaxOutlier):
     if dist < 50:
@@ -50,10 +50,11 @@ def planner(pub, xMinCenter, xMaxCenter, xMinOutlier, xMaxOutlier):
             print("Some error in areas computation occured")
             pass
     else:   # We're close to the ball -> rotate around it
-        rotateAround(pub)
-        if greenX > xMinCenter*0.5 and greenX < xMaxCenter*0.5:
+        if blueX > xMinCenter*0.5 and blueX < xMaxCenter*0.5:
             print("We see the goal in the middle -> go ahead")
             goAhead(pub)
+        else:
+            rotateAround(pub)
         
 
 def rotateAround(pub):
@@ -65,20 +66,20 @@ def rotateAround(pub):
 
 def goAhead(pub):
     twist = Twist()
-    twist.linear.x = 5; twist.linear.y = 0; twist.linear.z = 0
+    twist.linear.x = 2; twist.linear.y = 0; twist.linear.z = 0
     twist.angular.x = 1; twist.angular.y = 0; twist.angular.z = 0
     pub.publish(twist)
 
 def leftAlign(pub):
     twist = Twist()
-    twist.linear.x = 5; twist.linear.y = 5; twist.linear.z = 0
+    twist.linear.x = 2; twist.linear.y = 2; twist.linear.z = 0
     twist.angular.x = 1 # This gain is used to decouple the front and rear wheels, therefore, it has to be set to 1 if not decoupling 
     twist.angular.y = 0; twist.angular.z = 0  # counter-clock wise rotation
     pub.publish(twist)
 
 def rightAlign(pub):
     twist = Twist()
-    twist.linear.x = 5; twist.linear.y = -5; twist.linear.z = 0
+    twist.linear.x = 2; twist.linear.y = -2; twist.linear.z = 0
     twist.angular.x = 1 # This gain is used to decouple the front and rear wheels, therefore, it has to be set to 1 if not decoupling 
     twist.angular.y = 0; twist.angular.z = 0 # clock wise roation
     pub.publish(twist)
@@ -87,14 +88,14 @@ def rotateLeft(pub):
     twist = Twist()
     twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
     twist.angular.x = 1 # This gain is used to decouple the front and rear wheels, therefore, it has to be set to 1 if not decoupling 
-    twist.angular.y = 0; twist.angular.z = 5  # counter-clock wise rotation
+    twist.angular.y = 0; twist.angular.z = 2  # counter-clock wise rotation
     pub.publish(twist)
 
 def rotateRight(pub):
     twist = Twist()
     twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
     twist.angular.x = 1 # This gain is used to decouple the front and rear wheels, therefore, it has to be set to 1 if not decoupling 
-    twist.angular.y = 0; twist.angular.z = -5  # clock wise rotation
+    twist.angular.y = 0; twist.angular.z = -2  # clock wise rotation
     pub.publish(twist)
 
 # _____________________________________________________________________
@@ -109,8 +110,8 @@ def main(args):
     print("Subscribed to redX")
 
     # Subscribe to topic for detecting green (the goal)
-    subGoal =  rospy.Subscriber('greenX', Float32, callbackGoal)
-    print("Subscribed to greenX")
+    subGoal =  rospy.Subscriber('blueX', Float32, callbackGoal)
+    print("Subscribed to blueX")
 
      # Subscribe to topic for getting distance 
     subDist = rospy.Subscriber('dist', Float32, callbackDist)
