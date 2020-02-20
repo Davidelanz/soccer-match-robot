@@ -32,7 +32,7 @@ Password is ```carlo_conti```
 
 - Once got in, in rasp's terminal, export the rasp ip with:
 
- ``` export ROS_IP=localhost ```
+ ``` export ROS_IP=130.251.13.156 ```
 
 - Run the rosmaster node in rasp's terminal by running:
 
@@ -45,14 +45,10 @@ Password is ```carlo_conti```
 ``` export ROS_IP=130.251.13.134 ``` 
 
 
-   - Or in general
-
-``` export ROS_IP=localhost ``` 
-
 - Connect with the ros master on the pi with:
  	- Here you have to put the pi's ip
 
-``` export ROS_MASTER_URI=http://130.251.13.117:11311/ ```
+``` export ROS_MASTER_URI=http://130.251.13.156:11311/ ```
 
 
 - If you need to get some machine's ip you can run
