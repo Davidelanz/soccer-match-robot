@@ -34,9 +34,11 @@ Password is ```carlo_conti```
 
  ``` export ROS_IP=130.251.13.156 ```
 
-- Run the rosmaster node in rasp's terminal by running:
+- Launch the raspicam node in rasp's terminal by running:
 
-``` roscore ```
+``` roslaunch raspicam_node camerav2_410x308_10fps.launch ```
+
+This command will also launch the roscore 
 
 - Get back to the laptop and export its ip:
 
@@ -69,7 +71,7 @@ Password is ```carlo_conti```
 
 - In laptop's terminal run the raspicam node and the perception node:
 
-``` roslaunch raspicam_node camerav2_410x308_10fps.launch ```
+
 
 ``` rosrun robot_perception red_perception_node.py ```
 
