@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 
 # This is the controller able to detect the ball, reach a certain distance from it and align itself and the ball with 
 # the target
@@ -50,6 +51,10 @@ def planner(pub, xMinCenter, xMaxCenter, xMinOutlier, xMaxOutlier):
             pass
     else:   # We're close to the ball -> rotate around it
         rotateAround(pub)
+        if greenX > xMinCenter*0.5 and greenX < xMaxCenter*0.5:
+            print("We see the goal in the middle -> go ahead")
+            goAhead(pub)
+        
 
 def rotateAround(pub):
     twist = Twist()

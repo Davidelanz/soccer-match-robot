@@ -168,7 +168,7 @@ def main(args):
     '''Initializes and cleanup ros node'''
     print("Starting ROS Image feature detector module")
     ic = image_feature()
-    rospy.init_node('perception_node')
+    rospy.init_node('blue_perception_node')
     r = rospy.Rate(1) # 1hz
     try:
         rospy.spin()

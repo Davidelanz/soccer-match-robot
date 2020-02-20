@@ -171,7 +171,7 @@ class image_feature:
 def main(args):
     '''Initializes and cleanup ros node'''
     print("Starting ROS Image feature detector module")
-    rospy.init_node('perception_node')
+    rospy.init_node('red_perception_node')
     ic = image_feature()
     r = rospy.Rate(1) # 1hz
     try:
