@@ -8,9 +8,11 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg import Float32
 
 
-ballX = 0   # Ball
-blueX = 0  # Goal
-dist = 999    # Distance
+ballX = 0       # Ball
+blueX = 0       # Goal
+dist = 999      # Distance
+# sign = -1
+
 
 def callbackBall(data):
     global ballX
@@ -45,7 +47,7 @@ def planner(pub, xMinCenter, xMaxCenter, xMinOutlier, xMaxOutlier):
             rightAlign(pub)
         elif ballX < xMinOutlier or ballX > xMaxOutlier:
             print("The ball is in an outlying area -> spin to search ball")
-            rotateLeft(pub)
+            rotateRight(pub)
         else:
             print("Some error in areas computation occured")
             pass
@@ -55,12 +57,15 @@ def planner(pub, xMinCenter, xMaxCenter, xMinOutlier, xMaxOutlier):
             goAhead(pub)
         else:
             rotateAround(pub)
+            print("We don't see the goal -> rotating around")
         
 
 def rotateAround(pub):
+    # global sign
     twist = Twist()
-    twist.linear.x = 0; twist.linear.y = 5; twist.linear.z = 0            
-    twist.angular.x = 0.33  # This gain is used to decouple the front and rear wheels
+    twist.linear.x = 0; twist.linear.y = 2 ; twist.linear.z = 0  
+    # sign = sign * -1          
+    twist.angular.x = 0.375  # This gain is used to decouple the front and rear wheels
     twist.angular.y = 0; twist.angular.z = 0
     pub.publish(twist)
 
@@ -95,7 +100,7 @@ def rotateRight(pub):
     twist = Twist()
     twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
     twist.angular.x = 1 # This gain is used to decouple the front and rear wheels, therefore, it has to be set to 1 if not decoupling 
-    twist.angular.y = 0; twist.angular.z = -2  # clock wise rotation
+    twist.angular.y = 0; twist.angular.z = -1  # clock wise rotation
     pub.publish(twist)
 
 # _____________________________________________________________________
@@ -104,7 +109,7 @@ def main(args):
     '''Initializes and cleanup ros node'''
     print("Starting ROS bull controller node")
     rospy.init_node('controller')
-    
+ 
     # Subscribe to topic for detecting red (the ball)
     subBall =  rospy.Subscriber('redX', Float32, callbackBall)
     print("Subscribed to redX")

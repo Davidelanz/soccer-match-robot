@@ -50,8 +50,10 @@ class image_feature:
         # define color ranges in HSV
         self.lower_red = np.array([160, 140, 50])
         self.upper_red = np.array([180, 255, 255])
-        self.lower_blue = np.array([110, 50, 50])
-        self.upper_blue = np.array([130, 255, 255])
+        # self.lower_blue = np.array([110, 50, 50])
+        # self.upper_blue = np.array([130, 255, 255])
+        self.lower_blue = np.array([96, 140, 50])
+        self.upper_blue = np.array([126, 255, 255])
         self.lower_green = np.array([45, 140, 50])
         self.upper_green = np.array([75, 255, 255])
 
