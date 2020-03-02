@@ -19,7 +19,7 @@ Think about the possible general architecture of the system, defining the main b
 
 ## Scheme
 
-<img src="https://github.com/Davidelanz/exrob_asmt2/blob/master/docu/L298N-Block-Diagram.png" alt="L298-With-Arduino" height="300px">
+<img src="https://github.com/Davidelanz/exrob_asmt2/blob/master/docu/L298N-Block-Diagram.png" alt="L298-With-Arduino" height="250px">
 
 <img src="https://github.com/Davidelanz/exrob_asmt2/blob/master/docu/L298-With-Arduino.png" alt="L298-With-Arduino" height="300px">
 
