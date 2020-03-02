@@ -11,6 +11,7 @@ from std_msgs.msg import Float32
 ballX = 0       # Ball
 blueX = 0       # Goal
 dist = 999      # Distance
+area = 1
 # sign = -1
 
 
@@ -24,13 +25,21 @@ def callbackGoal(data):
     blueX = data.data 
     # rospy.loginfo("Goal callback data is %f", data.data)
 
-def callbackDist(data):
-    global dist
-    dist = data.data 
+# def callbackDist(data):
+#     global dist
+#     dist = data.data 
+#     # rospy.loginfo("Distance callback data is %f", data.data)
+
+def callbackArea(data):
+    global area
+    area = data.data 
     # rospy.loginfo("Distance callback data is %f", data.data)
     
-def planner(pub, xMinCenter, xMaxCenter, xMinOutlier, xMaxOutlier):
-    if dist < 50:
+def planner(pub, xMinCenter, xMaxCenter, xMinOutlier, xMaxOutlier, xMinGoal, xMaxGoal, sign, xRightGoal, xLeftGoal):
+    if area > 50000:
+        #goBack(pub)
+        distOk = False
+    elif area < 50001 and area > 25000:
         distOk = True
     else:
         distOk = False
@@ -52,18 +61,39 @@ def planner(pub, xMinCenter, xMaxCenter, xMinOutlier, xMaxOutlier):
             print("Some error in areas computation occured")
             pass
     else:   # We're close to the ball -> rotate around it
-        if blueX > xMinCenter*0.5 and blueX < xMaxCenter*0.5:
+        # if blueX > xMinCenter and blueX < xMaxCenter:
+        #     print("We see the goal in the middle -> go ahead")
+        #     goAhead(pub)
+        # elif blueX > xMinOutlier and blueX < xMinCenter:
+        #     print("We see the goal in the left -> go left")
+        #     leftAlign(pub)
+        # elif blueX < xMaxOutlier and blueX > xMaxCenter:
+        #     print("We see the goal in the right -> go right")
+        #     rightAlign(pub)
+        # elif blueX < xMinOutlier or blueX > xMaxOutlier:
+        #     print("We don't see the goal -> rotating around")
+        #     rotateAround(pub)
+        # else:
+        #     print("Some error in areas computation occured")
+        #     pass
+        if blueX > xMinGoal  and blueX < xMaxGoal:
             print("We see the goal in the middle -> go ahead")
             goAhead(pub)
+        elif blueX > xMaxGoal and blueX < xRightGoal :
+            print("We see the goal on the right -> go right")
+            rightAlign(pub)
+        elif blueX < xMinGoal and blueX > xLeftGoal:
+            print("We see the goal on the left -> go left")
+            leftAlign(pub)
         else:
-            rotateAround(pub)
+            rotateAround(pub,sign)
             print("We don't see the goal -> rotating around")
         
 
-def rotateAround(pub):
+def rotateAround(pub, sign):
     # global sign
     twist = Twist()
-    twist.linear.x = 0; twist.linear.y = 2 ; twist.linear.z = 0  
+    twist.linear.x = 0; twist.linear.y = -5 * sign; twist.linear.z = 0  
     # sign = sign * -1          
     twist.angular.x = 0.375  # This gain is used to decouple the front and rear wheels
     twist.angular.y = 0; twist.angular.z = 0
@@ -71,20 +101,27 @@ def rotateAround(pub):
 
 def goAhead(pub):
     twist = Twist()
-    twist.linear.x = 2; twist.linear.y = 0; twist.linear.z = 0
+    twist.linear.x = 5; twist.linear.y = 0; twist.linear.z = 0
     twist.angular.x = 1; twist.angular.y = 0; twist.angular.z = 0
     pub.publish(twist)
 
+def goBack(pub):
+    twist = Twist()
+    twist.linear.x = -5; twist.linear.y = 0; twist.linear.z = 0
+    twist.angular.x = 1; twist.angular.y = 0; twist.angular.z = 0
+    pub.publish(twist)
+
+
 def leftAlign(pub):
     twist = Twist()
-    twist.linear.x = 2; twist.linear.y = 2; twist.linear.z = 0
+    twist.linear.x = 5; twist.linear.y = 5; twist.linear.z = 0
     twist.angular.x = 1 # This gain is used to decouple the front and rear wheels, therefore, it has to be set to 1 if not decoupling 
     twist.angular.y = 0; twist.angular.z = 0  # counter-clock wise rotation
     pub.publish(twist)
 
 def rightAlign(pub):
     twist = Twist()
-    twist.linear.x = 2; twist.linear.y = -2; twist.linear.z = 0
+    twist.linear.x = 5; twist.linear.y = -5; twist.linear.z = 0
     twist.angular.x = 1 # This gain is used to decouple the front and rear wheels, therefore, it has to be set to 1 if not decoupling 
     twist.angular.y = 0; twist.angular.z = 0 # clock wise roation
     pub.publish(twist)
@@ -93,7 +130,7 @@ def rotateLeft(pub):
     twist = Twist()
     twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
     twist.angular.x = 1 # This gain is used to decouple the front and rear wheels, therefore, it has to be set to 1 if not decoupling 
-    twist.angular.y = 0; twist.angular.z = 2  # counter-clock wise rotation
+    twist.angular.y = 0; twist.angular.z = 1  # counter-clock wise rotation
     pub.publish(twist)
 
 def rotateRight(pub):
@@ -118,9 +155,13 @@ def main(args):
     subGoal =  rospy.Subscriber('blueX', Float32, callbackGoal)
     print("Subscribed to blueX")
 
+    #  # Subscribe to topic for getting distance 
+    # subDist = rospy.Subscriber('dist', Float32, callbackDist)
+    # print("Subscribed to dist")
+
      # Subscribe to topic for getting distance 
-    subDist = rospy.Subscriber('dist', Float32, callbackDist)
-    print("Subscribed to dist")
+    subDist = rospy.Subscriber('areaX', Float32, callbackArea)
+    print("Subscribed to area")
 
     pub = rospy.Publisher('cmd_vel', Twist, queue_size = 1)
     print("Publisher on cmd_vel")
@@ -139,10 +180,23 @@ def main(args):
     # Center area, when ball is ahead
     xMinCenter = -0.2*width
     xMaxCenter = 0.2*width
-
-    r = rospy.Rate(10) # 1hz
+    
+    # Centre detection area for goal
+    xMinGoal = xMin + 0.3*width 
+    xMaxGoal = xMax - 0.3*width
+    # Right and left detection area for goal
+    xRightGoal = xMaxGoal + 0.2*width 
+    xLeftGoal  = xMinGoal - 0.2*width
+    
+    sign = 1
+    counter = 0
+    r = rospy.Rate(10) # 10hz
     while not rospy.is_shutdown():
-        planner(pub, xMinCenter, xMaxCenter, xMinOutlier, xMaxOutlier)
+        planner(pub, xMinCenter, xMaxCenter, xMinOutlier, xMaxOutlier, xMinGoal, xMaxGoal, sign, xRightGoal, xLeftGoal)
+        counter = counter + 1
+        if counter == 100:
+            sign = sign * -1
+            counter = 0
         #rospy.spin()
         r.sleep()
 
