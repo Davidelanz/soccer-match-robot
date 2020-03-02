@@ -19,11 +19,19 @@ Think about the possible general architecture of the system, defining the main b
 
 ## Scheme
 
-![Motors + Arduinio](/docu/L298N-Block-Diagram.png)
+<img src="https://github.com/Davidelanz/exrob_asmt2/blob/master/docu/L298N-Block-Diagram.png" alt="L298-With-Arduino" height="300px">
 
-![Motors + Arduinio](/docu/L298-With-Arduino.png)
+<img src="https://github.com/Davidelanz/exrob_asmt2/blob/master/docu/L298-With-Arduino.png" alt="L298-With-Arduino" height="300px">
 
-![Scheme](/docu/scheme.pdf)
+<object data="https://github.com/Davidelanz/exrob_asmt2/blob/master/docu/scheme.pdf" type="application/pdf" width="700px" height="700px">
+    <embed src="https://github.com/Davidelanz/exrob_asmt2/blob/master/docu/scheme.pdf">
+        <p>
+           <a href="https://github.com/Davidelanz/exrob_asmt2/blob/master/docu/scheme.pdf"> 
+              General architecture (ROS nodes + Arduino)
+           </a>
+         </p>
+    </embed>
+</object>
 
 ### Load the motor driver arduino sketch
 Simply load the motor_driver.ino sketch on the board. Remeber to choose the "Arduino due - programming port" board and "/dev/ttyACM0" port.
