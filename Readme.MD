@@ -17,6 +17,13 @@ Think about the possible general architecture of the system, defining the main b
    - [https://docs.opencv.org/3.3.1/d9/df8/tutorial_root.html]
    - [https://www.learnopencv.com/blob-detection-using-opencv-python-c/]
 
+## Scheme
+
+![Motors + Arduinio](/docu/L298N-Block-Diagram.png)
+
+![Motors + Arduinio](/docu/L298-With-Arduino.png)
+
+![Scheme](/docu/scheme.pdf)
 
 ### Load the motor driver arduino sketch
 Simply load the motor_driver.ino sketch on the board. Remeber to choose the "Arduino due - programming port" board and "/dev/ttyACM0" port.
