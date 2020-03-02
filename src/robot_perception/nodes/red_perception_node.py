@@ -40,6 +40,7 @@ class image_feature:
         #self.image_pub = rospy.Publisher("/output/image_raw/compressed",
         #    CompressedImage, queue_size=1)
         self.redX_pub = rospy.Publisher("redX", Float32, queue_size=1)
+        self.area_pub = rospy.Publisher("areaX", Float32, queue_size=1)
 
         # subscribed Topic
         self.subscriber = rospy.Subscriber("/raspicam_node/image/compressed",
@@ -70,7 +71,7 @@ class image_feature:
         # Image processing
         res = self.red_filtering(frame)
         # Detect centrode
-        cX, cY = self.detect_centrode(res)
+        cX, cY, fullArea = self.detect_centrode(res)
         # Write the point (cX,xY) on "res" image
         try:
             cv2.circle(res, (int(cX),int(cY)), 5, (255, 0, 0), -1)
@@ -81,6 +82,7 @@ class image_feature:
         cX = int(cX-frame_width/2) 
         cY = int(cY-frame_height/2)
         self.redX_pub.publish(cX)
+        self.area_pub.publish(int(fullArea))
 
         # Print the center of mass coordinates w.r.t the center of image and diplay it
         if VERBOSE:
@@ -142,7 +144,7 @@ class image_feature:
         for i in range(len(areas)):
             acc_X += centersX[i] * (areas[i]/full_areas) 
             acc_Y += centersY[i] * (areas[i]/full_areas)
-        return acc_X,acc_Y
+        return acc_X,acc_Y, full_areas
 
     
     def extraction(self, cX):
