@@ -82,14 +82,13 @@ This command will also launch the roscore
 
 - You can now launch the controller on another terminal of the raspberry with:
 
-``` rosrun bull_controller bull_controller.py ```
+``` rosrun bull_controller clever_bull_controller.py ```
 
-- In laptop's terminal run the raspicam node and the perception node:
-
-
+- In laptop's terminal run the red perception node for detecting the ball:
 
 ``` rosrun robot_perception red_perception_node.py ```
 
+- In laptop's terminal run the blue perception node for detecting the goal:
 
 Note: remember that you have to export the raspberry's ip for each terminal you need to use and export the laptop's ip and connect it to the ros master on the raspberry on each laptop's terminal
 
