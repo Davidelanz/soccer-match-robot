@@ -1,4 +1,4 @@
-# Eperimental Robotics Lab (EXROB) ROS workspace 
+# Four-wheeled Robot Design for Soccer Match
 
 The aim of this project is to build a system able to play a robotic soccer match 1 vs 1
 - Subtasks involved:
@@ -7,9 +7,24 @@ The aim of this project is to build a system able to play a robotic soccer match
    - Task planning
    - Low level driver control
 
+## Contents
+
+1. [Guidelines](#guidelines)
+1. [Scheme](#scheme)
+1. [Getting started](#getting-started)
+   1. [Download the ROS workspace](#download-the-ros-workspace)
+   1. [Configure the Arduino motor driver](#configure-the-arduino-motor-driver)
+   1. [Connect Raspberry's ROS master to remote workstation](#connect-raspberrys-ros-master-to-remote-workstation)
+   1. [Launch the ROS node necessary for autonomous control](#launch-the-ros-node-necessary-for-autonomous-control)
+   1. [Cameras](#cameras)
+   1. [Control the robot with keyboard](#control-the-robot-with-keyboard)
+1. [Troubleshoot](#troubleshoot)
+1. [Authors](#authors)
+   
+   
 ## Guidelines
 
-Think about the possible general architecture of the system, defining the main blocks constituting your model.
+Sketch out the possible general architecture of the system, defining the main blocks constituting the model:
 - Develop a ROS Module that recognize a red object and track it.
 - Start testing your code in a simulation environment
 - Take a look to:
@@ -19,79 +34,88 @@ Think about the possible general architecture of the system, defining the main b
 
 ## Scheme
 
-<img src="https://github.com/Davidelanz/exrob_asmt2/blob/master/docu/L298N-Block-Diagram.png" alt="L298-With-Arduino" height="250px">
+- L298 Motor drivers interface with the Arduino board:
 
-<img src="https://github.com/Davidelanz/exrob_asmt2/blob/master/docu/L298-With-Arduino.png" alt="L298-With-Arduino" height="300px">
+<p align="center">
+   <img src="https://github.com/Davidelanz/exrob_asmt2/blob/master/docu/L298N-Block-Diagram.png" alt="L298-With-Arduino" width="70%"/>
+</p>
 
-<object data="https://github.com/Davidelanz/exrob_asmt2/blob/master/docu/scheme.pdf" type="application/pdf" width="700px" height="700px">
-    <embed src="https://github.com/Davidelanz/exrob_asmt2/blob/master/docu/scheme.pdf">
-        <p>
-           <a href="https://github.com/Davidelanz/exrob_asmt2/blob/master/docu/scheme.pdf"> 
-              General architecture (ROS nodes + Arduino)
-           </a>
-         </p>
-    </embed>
-</object>
+<p align="center">
+   <img src="https://github.com/Davidelanz/exrob_asmt2/blob/master/docu/L298-With-Arduino.png" alt="L298-With-Arduino" width="70%"/>
+</p>
 
-### Load the motor driver arduino sketch
-Simply load the motor_driver.ino sketch on the board. Remeber to choose the "Arduino due - programming port" board and "/dev/ttyACM0" port.
+- ROS Nodes architecture scheme (Raspberri Pi Robot & Remote Workstation):
 
-### Connect Raspberry's ros master to laptop ros node via SSH 
-Prerequisite: the raspberry must be connected on the same network of the laptop
+![](https://github.com/Davidelanz/exrob_asmt2/blob/master/docu/scheme.svg?raw=True)
 
-- Access the pi via SSH by running in laptop's terminal:
+## Getting started
 
-``` ssh pi@legobot.local ```
+### Download the ROS workspace
 
-Password is ```carlo_conti```
+Clone this repository on both the Raspberry Pi and the remote workstation:
 
-- Once got in, in rasp's terminal, export the rasp ip with:
+```
+https://github.com/Davidelanz/soccer-match-robot.git
+```
 
- ``` export ROS_IP=130.251.13.156 ```
+Then build the workspace:
 
-- Launch the raspicam node in rasp's terminal by running:
+``` 
+cd soccer-match-robot/
+catkin_make
+```
 
-``` roslaunch raspicam_node camerav2_410x308_10fps.launch ```
+Remember to source it in the bash (for further details: http://wiki.ros.org/catkin/Tutorials/create_a_workspace).
 
-This command will also launch the roscore 
+### Configure the Arduino motor driver
 
-- Get back to the laptop and export its ip:
+Simply load the `motor_driver.ino` sketch on the board. Remeber to choose the `Arduino due - programming port` board and `/dev/ttyACM0` port.
 
-   - For laboratorium's wifi
+### Connect Raspberry's ROS master to remote workstation
 
-``` export ROS_IP=130.251.13.134 ``` 
+> **Prerequisite**: the Raspberry must be connected on the same network of the remote workstation (e.g. a laptop).
+
+1. Access the Raspberry via SSH by running in remote workstation's terminal. For example:
+   ```ssh pi@raspberry.local```
+
+1. Once got in Raspberry's terminal, export its IP address:
+
+   ```pi@raspberry.local:~$ export ROS_IP=RASPBERRY_IP```
+   
+> If you need the machine's IP you can run  `hostname -I`
+
+1. Launch the `raspicam` node in Raspberry's terminal (this command will also launch the `roscore`):
+
+   ```pi@raspberry.local:~$ roslaunch raspicam_node camerav2_410x308_10fps.launch ```
+
+1. Get back to the remote workstation and export its IP address as well:
+
+   ```user@remote-workstation:~$ export ROS_IP=REMOTE_WORKSTATION_IP```
+
+1. Then, connect the ROS master on the Raspberry to the remoting workstation by using the Raspberry's IP:
+   
+   ```user@remote-workstation:~$ export ROS_MASTER_URI=http://RASPBERRY_IP:11311/```
 
 
-- Connect with the ros master on the pi with:
- 	- Here you have to put the pi's ip
+### Launch the ROS node necessary for autonomous control
 
-``` export ROS_MASTER_URI=http://130.251.13.156:11311/ ```
+1. In the Raspberry's terminal, launch the `motor_driver` node:
 
+   ``` pi@raspberry.local:~$ rosrun motor_driver motor_driver.py ```
 
-- If you need to get some machine's ip you can run
+1. You can now launch the controller on another terminal of the Raspberry with:
 
-``` hostname -I ```
+   ```pi@raspberry.local:~$ rosrun bull_controller clever_bull_controller.py ```
 
+1. In remote workstation's terminal run the red perception node for detecting the ball:
 
-### Launch the rosnode necessary to allow the robot to move around autonomously
+   ```user@remote-workstation:~$ rosrun robot_perception red_perception_node.py ```
 
+1. In remote workstation's terminal run the `blue_perception` node for detecting the goal:
+   
+   ```user@remote-workstation:~$ rosrun robot_perception blue_perception_node.py ```
 
-- In the pi's terminal, launch the motor driver node:
-
-``` rosrun motor_driver motor_driver.py ```
-
-- You can now launch the controller on another terminal of the raspberry with:
-
-``` rosrun bull_controller clever_bull_controller.py ```
-
-- In laptop's terminal run the red perception node for detecting the ball:
-
-``` rosrun robot_perception red_perception_node.py ```
-
-- In laptop's terminal run the blue perception node for detecting the goal:
-
-Note: remember that you have to export the raspberry's ip for each terminal you need to use and export the laptop's ip and connect it to the ros master on the raspberry on each laptop's terminal
-
+> Remember that you have to export the Raspberry's IP for each terminal you need to use and export the remote workstation's IP and connect it to the ROS master on the raspberry on each laptop's terminal
 
 
 ### Cameras
@@ -103,25 +127,23 @@ The ```raspicam_node``` supports dynamically reconfiguring the camera parameters
 ``` rosrun rqt_reconfigure rqt_reconfigure ```
 
 ### Control the robot with keyboard
-After having loaded the arduino sketch and followed the instruction on how to Connect Raspberry's ros master to laptop ros node via SSH
 
-- In the pi's terminal, launch the motor driver node:
+Pre-requisites: arduino sketch loaded and Raspberry's ROS master connected to the remote workstation
 
-``` rosrun motor_driver motor_driver.py ```
+1. In Raspberry's terminal, launch the `motor_driver` node:
 
-- In laptop's terminal launch the teleop_twist_keyboard node and follow the instruction at screen:
+```pi@raspberry.local:~$ rosrun motor_driver motor_driver.py ```
 
-``` rosrun teleop_twist_keyboard teleop_twist_keyboard.py ```
+- In remote workstation's terminal launch the `teleop_twist_keyboard` node and follow the instruction at screen:
 
-Remember to increase the speed (w key) at least to 2/3 to get a decent feedback from the motor
+```user@remote-workstation:~$ rosrun teleop_twist_keyboard teleop_twist_keyboard.py ```
 
-
-
+> Remember to increase the speed (`w` key) at least to 2/3 to get a decent feedback from the motor
 
 
+## Troubleshoot:
 
-### Troubleshoot:
-ssh not enabled on Rasp 
+SSH not enabled on Rasp:
    - [https://linuxize.com/post/how-to-enable-ssh-on-ubuntu-18-04/]
    - [https://askubuntu.com/questions/921258/how-to-enable-ssh-on-boot-in-ubuntu-mate]
 
