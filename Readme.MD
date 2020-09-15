@@ -85,7 +85,7 @@ Simply load the `motor_driver.ino` sketch on the board. Remeber to choose the `A
 
    ```pi@raspberry.local:~$ export ROS_IP=RASPBERRY_IP```
    
-> If you need the machine's IP you can run  `hostname -I`
+    :warning: If you need the machine's IP you can run  `hostname -I`
 
 1. Launch the `raspicam` node in Raspberry's terminal (this command will also launch the `roscore`):
 
@@ -123,9 +123,7 @@ Simply load the `motor_driver.ino` sketch on the board. Remeber to choose the `A
 
 ### Cameras
 
-The ```raspicam_node``` supports dynamically reconfiguring the camera parameters.
-
-- Run the dynamic reconfigure node on a connected computer:
+The ```raspicam_node``` supports dynamically reconfiguring the camera parameters. Run the dynamic reconfigure node on a connected computer:
 
 ``` rosrun rqt_reconfigure rqt_reconfigure ```
 
@@ -137,7 +135,7 @@ Pre-requisites: arduino sketch loaded and Raspberry's ROS master connected to th
 
 ```pi@raspberry.local:~$ rosrun motor_driver motor_driver.py ```
 
-- In remote workstation's terminal launch the `teleop_twist_keyboard` node and follow the instruction at screen:
+1. In remote workstation's terminal launch the `teleop_twist_keyboard` node and follow the instruction at screen:
 
 ```user@remote-workstation:~$ rosrun teleop_twist_keyboard teleop_twist_keyboard.py ```
 
