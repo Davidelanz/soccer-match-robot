@@ -1,11 +1,14 @@
 # Four-wheeled Robot Design for Soccer Match
 
-The aim of this project is to build a system able to play a robotic soccer match 1 vs 1
-- Subtasks involved:
-   - Perception: detecting a red ball,(eventually) the opponent and the goal (green)
-   - Trajectory planning: controlling the velocity for reaching the target in an appropriate way
-   - Task planning
-   - Low level driver control
+![ROS Distro](https://img.shields.io/badge/ROS-Melodic-Green)
+![Raspberry Model](http://img.shields.io/badge/Raspberry-PI_3(Model_B)-red)
+![Raspberry Model](http://img.shields.io/badge/Arduino-UNO-blue)
+
+The aim of this project is to build a system able to play a robotic soccer match 1 vs 1. Subtasks involved:
+  - Perception: detecting a red ball and (eventually) the opponent and the goal (blue)
+  - Trajectory planning: controlling the velocity for reaching the target in an appropriate way
+  - Task planning
+  - Low level driver control
 
 ## Contents
 
