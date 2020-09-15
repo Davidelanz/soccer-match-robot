@@ -10,6 +10,19 @@ The aim of this project is to build a system able to play a robotic soccer match
   - Task planning
   - Low level driver control
 
+---
+
+<p align="center" >
+  <br>
+  <b>Demo video:</b><br>
+  <br>
+  <a href="https://youtu.be/ddS0RCIas3Q">
+    <img src="https://img.youtube.com/vi/ddS0RCIas3Q/maxresdefault.jpg" width="50%" />
+  </a>
+</p>
+
+---
+
 ## Contents
 
 1. [Guidelines](#guidelines)
@@ -24,6 +37,7 @@ The aim of this project is to build a system able to play a robotic soccer match
 1. [Troubleshoot](#troubleshoot)
 1. [Authors](#authors)
    
+---
    
 ## Guidelines
 
